@@ -26,24 +26,35 @@ Download the files and place them in your project accordingly. Then add `#includ
 ## Example code
 
 ```c
+#include "main.h"
+#include "i2c.h"
 #include "ms5611.h"
+#include <stdio.h>
 
 I2C_HandleTypeDef hi2c1;
 
-[...]
-
 int main(void)
 {
-    [...]
+    /* Initialize the HAL library and system clock */
+    HAL_Init();
+    SystemClock_Config();
 
+    /* Initialize I2C1 peripheral */
+    MX_I2C1_Init();
+
+    /* Initialize MS5611 sensor with mathMode = 0 (default) */
     MS5611_Init(&hi2c1, 0);
-    while(1)
+
+    while (1)
     {
         float temperature, pressure;
-        MS5611_Read(&hi2c1, &temperature, &pressure);
 
-        printf("Temperature: %.2f °C\n", temperature);
-        printf("Pressure: %.2f hPa\n", pressure / 100.0f);
+        /* Read temperature (°C) and pressure (Pa) from the sensor */
+        MS5611_Measure(&hi2c1, &temperature, &pressure);
+
+        /* Print results over UART (pressure converted to hPa) */
+        printf("Temperature: %.2f °C\r\n", temperature);
+        printf("Pressure: %.2f hPa\r\n", pressure / 100.0f);
 
         HAL_Delay(1000);
     }
@@ -53,3 +64,4 @@ int main(void)
 ## Additional information
 
 If something isn't working for you or there's a bug with the library, feel free to contact me or create a new Issue.
+
