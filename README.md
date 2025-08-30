@@ -8,20 +8,31 @@ Thanks to [@RobTillaart](https://github.com/RobTillaart) for letting me use his 
 
 Download the files and place them in your project accordingly. Then add `#include "ms5611.h"` to your file where you want to use the library functions.
 
-### Explanations of functions
+## Function descriptions
 
-- `MS5611_Init(I2C_HandleTypeDef *hi2c, uint8_t mathMode)`:  
-    Initializes the MS5611 sensor with the specified I2C handle and math mode.
+#### `MS5611_Init(I2C_HandleTypeDef *hi2c, uint8_t mathMode)`
+Initializes the MS5611 sensor with the specified I²C handle and math mode.
 
-> [!NOTE]  
-> `mathMode = 0 (default)` - Default atmospheric pressure calculation.
-> `mathMode = 1` - Modified atmospheric pressure calculation (mode with the constants used in the application notes).
+**Parameters:**
+- `hi2c` – pointer to the HAL I²C handle (e.g. `&hi2c1`)
+- `mathMode`:
+  - `0` *(default)* – default atmospheric pressure calculation (datasheet constants)
+  - `1` – modified atmospheric pressure calculation (Application Note constants)
 
 > [!TIP]
-> If you don't know what mathMode to use, try setting it to 0 first. If the pressure differs from reality (unrealistic values ​​like 498 hPa), try setting the value to 1.
+> If you are unsure which `mathMode` to use, start with `0`.  
+> If the measured pressure is unrealistic (e.g. ~498 hPa), try setting it to `1`.
 
-- `MS5611_Read(I2C_HandleTypeDef *hi2c, float *temperature, float *pressure)`:  
-    Reads data from the sensor and writes it to variable pointers.
+#### `MS5611_Read(I2C_HandleTypeDef *hi2c, float *temperature, float *pressure)`
+Reads temperature and pressure data from the sensor and stores them in the provided variables.
+
+**Parameters:**
+- `hi2c` – pointer to the HAL I²C handle
+- `temperature` – pointer to a `float` to store temperature in °C
+- `pressure` – pointer to a `float` to store pressure in Pa
+
+> [!NOTE]
+> The units returned by the function are **°C** and **Pa**
 
 ## Example code
 
@@ -64,4 +75,5 @@ int main(void)
 ## Additional information
 
 If something isn't working for you or there's a bug with the library, feel free to contact me or create a new Issue.
+
 
