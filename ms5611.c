@@ -112,6 +112,7 @@ void MS5611_Measure(I2C_HandleTypeDef *hi2c, float *temperature, float *pressure
 
     float P = (D1 * SENS * 4.76837158205E-7f - OFF) * 3.051757813E-5f;
 
-    *temperature = TEMP * 0.01f;   /* °C */
-    *pressure    = P * 100.0f;     /* Pa */
+    *temperature = TEMP * 0.01f; /* °C */
+    *pressure    = (float)P;     /* Pa */
 }
+
